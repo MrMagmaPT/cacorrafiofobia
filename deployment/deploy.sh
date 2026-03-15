@@ -7,7 +7,7 @@
 
 set -e  # Exit immediately on error
 
-APP_DIR="/var/www/cacorrafiofobia"
+APP_DIR="/var/www/html/cacorrafiofobia"
 WEB_USER="www-data"  # Apache user on Debian/Ubuntu (use 'apache' on RHEL/CentOS)
 
 echo "==> Moving to app directory..."
@@ -37,7 +37,10 @@ echo "==> [1/3] Creating MariaDB database and user..."
 # Edit these values to match your .env
 DB_NAME="cacorrafiofobia"
 DB_USER="cacorrafiofobia_user"
-DB_PASS="your_strong_password_here"   # <-- change this
+DB_PASS="your_strong_password_here"   # <-- set a password for the APP user (not root)
+
+# Root password — leave empty if your MariaDB root has no password (default on fresh installs)
+ROOT_PASS=""
 
 DB_NAME_SQL=${DB_NAME//\'/\'\'}
 DB_USER_SQL=${DB_USER//\'/\'\'}
@@ -51,7 +54,12 @@ SET @DB_PASS = '$DB_PASS_SQL';
 SOURCE $APP_DIR/deployment/db-init.sql;
 EOF
 
-mysql -u root -p < "$DB_BOOTSTRAP_FILE"
+# Connect as root — with or without password
+if [ -z "$ROOT_PASS" ]; then
+    mysql -u root < "$DB_BOOTSTRAP_FILE"
+else
+    mysql -u root -p"$ROOT_PASS" < "$DB_BOOTSTRAP_FILE"
+fi
 rm -f "$DB_BOOTSTRAP_FILE"
 
 echo "==> [2/3] Running Laravel migrations (creates users table and other core tables)..."
@@ -65,7 +73,11 @@ SET @DB_NAME = '$DB_NAME_SQL';
 SOURCE $APP_DIR/deployment/db-schema.sql;
 EOF
 
-mysql -u root -p < "$DB_SCHEMA_FILE"
+if [ -z "$ROOT_PASS" ]; then
+    mysql -u root < "$DB_SCHEMA_FILE"
+else
+    mysql -u root -p"$ROOT_PASS" < "$DB_SCHEMA_FILE"
+fi
 rm -f "$DB_SCHEMA_FILE"
 
 echo "==> Caching config, routes and views for production..."
