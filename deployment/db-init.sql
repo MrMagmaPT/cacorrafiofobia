@@ -5,7 +5,7 @@
 
 SET @db_name = COALESCE(@DB_NAME, 'cacorrafiofobia');
 SET @db_user = COALESCE(@DB_USER, 'cacorrafiofobia_user');
-SET @db_pass = COALESCE(@DB_PASS, 'change_me');
+SET @db_pass = COALESCE(@DB_PASS, 'carro123');
 
 SET @sql = CONCAT(
     'CREATE DATABASE IF NOT EXISTS `',

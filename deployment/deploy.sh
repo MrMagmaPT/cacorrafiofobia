@@ -9,6 +9,7 @@ set -e  # Exit immediately on error
 
 APP_DIR="/var/www/html/cacorrafiofobia"
 WEB_USER="www-data"  # Apache user on Debian/Ubuntu (use 'apache' on RHEL/CentOS)
+DEPLOY_USER="${SUDO_USER:-$(whoami)}"
 
 echo "==> Moving to app directory..."
 cd "$APP_DIR"
@@ -28,16 +29,24 @@ echo "==> Generating app key (skipped if already set)..."
 php artisan key:generate --no-interaction --force
 
 echo "==> Setting file permissions..."
-chown -R "$WEB_USER":"$WEB_USER" "$APP_DIR"
-chmod -R 755 "$APP_DIR"
-chmod -R 775 "$APP_DIR/storage"
-chmod -R 775 "$APP_DIR/bootstrap/cache"
+# Keep the codebase owned by the deploy user so artisan generators can write files,
+# while Apache gets group access only where Laravel needs runtime write access.
+chown -R "$DEPLOY_USER":"$WEB_USER" "$APP_DIR"
+find "$APP_DIR" -type d -exec chmod 755 {} \;
+find "$APP_DIR" -type f -exec chmod 644 {} \;
+find "$APP_DIR/storage" -type d -exec chmod 2775 {} \;
+find "$APP_DIR/bootstrap/cache" -type d -exec chmod 2775 {} \;
+find "$APP_DIR/storage" -type f -exec chmod 664 {} \;
+find "$APP_DIR/bootstrap/cache" -type f -exec chmod 664 {} \;
+touch "$APP_DIR/storage/logs/laravel.log"
+chown "$DEPLOY_USER":"$WEB_USER" "$APP_DIR/storage/logs/laravel.log"
+chmod 664 "$APP_DIR/storage/logs/laravel.log"
 
 echo "==> [1/3] Creating MariaDB database and user..."
 # Edit these values to match your .env
 DB_NAME="cacorrafiofobia"
 DB_USER="cacorrafiofobia_user"
-DB_PASS="your_strong_password_here"   # <-- set a password for the APP user (not root)
+DB_PASS="carro123"   # <-- set a password for the APP user (not root)
 
 # Root password — leave empty if your MariaDB root has no password (default on fresh installs)
 ROOT_PASS=""
