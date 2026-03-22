@@ -1,59 +1,179 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+How to set up the project:
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Win 11 env:
+```powershell
+cd C:\wamp64\www\cacorrafiofobia
+``` 
+### If .env doesn't exist, create it from example (if example exists)
+```powershell
+Copy-Item .env.example .env -ErrorAction SilentlyContinue
+``` 
+### Install dependencies
+```powershell
+composer install
+``` 
+### Generate app key
+```powershell
+php artisan key:generate
 
-## About Laravel
+php artisan migrate
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+php artisan migrate:status
+``` 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### SQL bootstrap + RPG schema (dev)
+Run this if you also want the RPG SQL tables in local dev.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```powershell
+# Creates DB/user/privileges from deployment/db-init.sql defaults
+mysql -u root -p < deployment\db-init.sql
 
-## Learning Laravel
+# Runs Laravel migrations (users, sessions, jobs, etc.)
+php artisan migrate
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+# Creates RPG tables (player_characters, player_races, player_classes, etc.)
+mysql -u root -p cacorrafiofobia < deployment\db-schema.sql
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# Ubuntu Cli Server:
+```powershell
+cd /var/www/cacorrafiofobia
+```
 
-## Laravel Sponsors
+### If .env missing:
+```powershell
+cp .env.example .env 
+``` 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Install production deps
+```powershell
+composer install --no-dev --optimize-autoloader
+```
 
-### Premium Partners
+## App key
+```powershell
+php artisan key:generate
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+php artisan migrate --force
 
-## Contributing
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache 
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### SQL bootstrap + RPG schema (server)
+```bash
+# Creates DB/user/privileges from deployment/db-init.sql defaults
+mysql -u root -p < deployment/db-init.sql
 
-## Code of Conduct
+# Runs Laravel migrations in production mode
+php artisan migrate --force
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Creates RPG tables (player_characters, player_races, player_classes, etc.)
+mysql -u root -p cacorrafiofobia < deployment/db-schema.sql
+```
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Migration command cheat sheet (works for both)
+```powershell
+php artisan migrate                    # run pending migrations
+php artisan migrate:status             # show applied/pending
+php artisan migrate:rollback           # rollback last batch
+php artisan migrate:rollback --step=1  # rollback one migration step
+php artisan migrate:refresh            # rollback all + rerun all
+php artisan migrate:fresh              # drop all tables + rerun (data loss)
+php artisan db:seed                    # run seeders
+php artisan migrate --seed             # migrate then seed
+``` 
+
+Important: `deployment/db-schema.sql` depends on Laravel `users` table, so run it after `php artisan migrate`.
+
+# If migration fails
+```powershell
+php artisan config:clear
+php artisan cache:clear
+php artisan migrate
+```
+
+
+# SQL
+```sql
+character_profile: 
+id: (int primary-key) 
+age: (int) 
+name: (string 200 char) 
+race_id: (forign key that links to race table) 
+SubRace_id: (forign key that links to race table (can be null)) 
+class_id: (foreign key that links to class table) 
+subclass_id: (foreign key that links to class table (can be null)) 
+LVL: (int)
+aligment: (String)
+money: (float) 
+hp: (float)
+stats_id: (foreign key for stats table)
+
+stats:
+id: (int)
+mana: (float)
+defence: (float)
+magic: (float)
+Int: (int)
+Ma: (int)
+Uc: (int)
+Lu: (int)
+Com: (int)
+Agi: (int)
+Str: (int)
+Md: (int)
+Con: (int)
+Res: (int)
+
+race: 
+id: (primary key) 
+Name: (string)
+
+class: 
+id: (prinary key) 
+Name: (string)
+
+item: 
+id: (primary key)
+user_id: (foreign for user) 
+type: (enum) 
+Tier: (int)
+Price: (float)
+Size: (float) 
+Image: (either url or blob idk) 
+Name: (String)
+Desc: (Sting)
+bonus: (float)
+
+skill: 
+id: (primary key) 
+user_id: (foreign key for user)
+name: (string)
+desc: (string)
+bonus: (float) 
+type: (enum)
+mana_cost: (int) 
+hp_cost: (int) 
+bonus_on_stat: (enum for 10 "items")
+
+magic: 
+id: (primary key) 
+user_id: (foreign key for user)
+magiccircles_id: (foreign key for magic_circles)
+lvl: (int)
+mana_cost: (float)
+Tier: (int)
+Name: (string)
+Effect: (string 500+ chars)
+Description: (string)
+```
+
+#### Running migrations if they fail due to caching issues
+```cmd
+php artisan migrate
+```
