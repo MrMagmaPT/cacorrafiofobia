@@ -16,7 +16,7 @@
                     <div class="container-fluid">
                         <!-- logo + name -->
                         <a class="navbar-brand" href="#">
-                            <img src="../resources/img/rpg_icon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                            <img src="{{ asset('img/rpg_icon.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
                             Cacorrafiofobia
                         </a>
                         <!-- Toggler/collapsibe Button -->
@@ -61,7 +61,7 @@
                     <h1 class="title"><b class="dragon-text">Cacorrafiofobia</b></h1>
                     <h1>Welcome to the web Hub</h1>
                     <br>
-                    <h5>To start uploading characters and building your story please <a href="{{ route('login') }}">login</a></h5>
+                    <h5>To start uploading characters and building your story please <a href="">login</a></h5>
                     <h5>using the credentials given to you by the DM</h5>
                 </div>
             @endauth
