@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name', 'Cacorrafiofobia - Login') }}</title>
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="{{ asset('../resources/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('../resources/css/app.css') }}">
-    <link rel="font" href="{{ asset('../resources/font/DragonSlayer.otf') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="font" href="{{ asset('font/DragonSlayer.otf') }}">
 </head>
 <body class="bg-dark text-light">
 <div class="d-flex flex-column justify-content-center align-items-center min-vh-100">
@@ -29,7 +29,7 @@
         </div>
 
         <!-- Submit button -->
-        <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+        <button type="submit" class="btn btn-primary btn-block mb-4">Log in</button>
 
         @if($errors->has('login'))
             <div>{{ $errors->first('login') }}</div>

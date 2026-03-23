@@ -41,9 +41,9 @@
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Logout</button>
                             </form>
                         @else
-                            <form class="form-inline ms-auto d-flex" method="GET" action="{{ route('login') }}">
+                            <form class="form-inline ms-auto d-flex" action="">
                                 @csrf
-                                <button type="submit" class="btn btn-sm btn-outline-success">login</button>
+                                <a href="{{ route('login') }}" class="btn btn-sm btn-outline-success">Login</a>
                             </form>
                         @endauth
                     </div>
@@ -59,7 +59,7 @@
                     <h1 class="title"><b class="dragon-text">Cacorrafiofobia</b></h1>
                     <h1>Welcome to the web Hub</h1>
                     <br>
-                    <h5>To start uploading characters and building your story please <a href="">login</a></h5>
+                    <h5>To start uploading characters and building your story please <a href="{{ route('login') }}">login</a></h5>
                     <h5>using the credentials given to you by the DM</h5>
                 </div>
             @endauth
