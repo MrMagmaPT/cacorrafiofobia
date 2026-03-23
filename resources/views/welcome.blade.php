@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{{ config('app.name', 'Cacorrafiofobia') }}</title>
         <link rel="icon" href="./favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" href="{{ asset('../resources/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('../resources/css/app.css') }}">
-        <link rel="font" href="{{ asset('../resources/font/DragonSlayer.otf') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="font" href="{{ asset('font/DragonSlayer.otf') }}">
     </head>
     <body class="bg-light-subtle text-dark d-flex flex-column min-vh-100">
         <header>
@@ -61,7 +61,7 @@
                     <h1 class="title"><b class="dragon-text">Cacorrafiofobia</b></h1>
                     <h1>Welcome to the web Hub</h1>
                     <br>
-                    <h5>To start uploading characters and building your story please login </h5>
+                    <h5>To start uploading characters and building your story please <a href="{{ route('login') }}">login</a></h5>
                     <h5>using the credentials given to you by the DM</h5>
                 </div>
             @endauth
