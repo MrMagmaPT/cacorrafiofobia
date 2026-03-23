@@ -9,3 +9,16 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+
+@font-face {
+    font-family: Dragon_Slayer; /* set name */
+    src: url(../font/DragonSlayer.otf);
+}
+
+.dragon-text {
+    font-family: Dragon_Slayer;
+}
+
+.title {
+    font-size: 5rem;
+}

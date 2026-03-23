@@ -14,7 +14,7 @@ return new class extends Migration
 
         DB::table('users')->insert([
             'name' => 'admin',
-            'email' => 'pmrmagma@gmail.com',
+            'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('admin'),
             'remember_token' => $token,
@@ -34,6 +34,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        DB::table('users')->where('email', 'pmrmagma@gmail.com')->delete();
+        DB::table('users')->where('email', 'admin@gmail.com')->delete();
     }
 };
