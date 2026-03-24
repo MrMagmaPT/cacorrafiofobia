@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('classes', function (Blueprint $table) {
+        Schema::create('player_classes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
@@ -47,8 +47,8 @@ return new class extends Migration
             $table->string('u_name', 200);
             $table->foreignId('race_id')->constrained('races');
             $table->foreignId('SubRace_id')->nullable()->constrained('races');
-            $table->foreignId('class_id')->constrained('classes');
-            $table->foreignId('subclass_id')->nullable()->constrained('classes');
+            $table->foreignId('class_id')->constrained('player_classes');
+            $table->foreignId('subclass_id')->nullable()->constrained('player_classes');
             $table->integer('LVL');
             $table->string('aligment')->nullable();
             $table->float('money')->nullable();
@@ -104,6 +104,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('player_characters');
+        Schema::dropIfExists('races');
+        Schema::dropIfExists('player_classes');
+        Schema::dropIfExists('stats');
+        Schema::dropIfExists('character_profiles');
+        Schema::dropIfExists('items');
+        Schema::dropIfExists('skills');
+        Schema::dropIfExists('magics');
     }
 };

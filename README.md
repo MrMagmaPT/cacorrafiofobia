@@ -1,4 +1,9 @@
-How to set up the project:
+# How to set up the project:
+#### get ot project directory:
+```bash
+cd /var/www/html/cacorrafiofobia
+```
+
 
 # Win 11 env:
 ```powershell
