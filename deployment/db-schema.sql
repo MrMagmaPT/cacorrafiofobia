@@ -76,7 +76,7 @@ CREATE TABLE character_profile (
        FOREIGN KEY (stats_id) REFERENCES stats(id)
 );
 
--- item
+-- items
 CREATE TABLE item (
   id       INT AUTO_INCREMENT PRIMARY KEY,
   user_id  INT NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE item (
       FOREIGN KEY (user_id) REFERENCES character_profile(id)
 );
 
--- skill
+-- skills
 CREATE TABLE skill (
    id            INT AUTO_INCREMENT PRIMARY KEY,
    user_id       INT NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE skill (
        FOREIGN KEY (user_id) REFERENCES character_profile(id)
 );
 
--- magic
+-- magics
 CREATE TABLE magic (
    id               INT AUTO_INCREMENT PRIMARY KEY,
    user_id          INT NOT NULL,

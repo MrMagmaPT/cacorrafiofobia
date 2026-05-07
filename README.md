@@ -104,7 +104,7 @@ php artisan migrate
 
 
 # SQL
-```sql
+```text
 character_profile: 
 id: (int primary-key) 
 age: (int) 

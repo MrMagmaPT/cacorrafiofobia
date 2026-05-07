@@ -46,7 +46,7 @@ return new class extends Migration
             $table->integer('u_age')->nullable();
             $table->string('u_name', 200);
             $table->foreignId('race_id')->constrained('races');
-            $table->foreignId('SubRace_id')->nullable()->constrained('races');
+            $table->foreignId('subrace_id')->nullable()->constrained('races');
             $table->foreignId('class_id')->constrained('player_classes');
             $table->foreignId('subclass_id')->nullable()->constrained('player_classes');
             $table->integer('LVL');
